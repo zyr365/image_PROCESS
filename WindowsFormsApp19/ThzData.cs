@@ -165,10 +165,10 @@ namespace WindowsFormsApp19
                 MMMAX = (Maxnum - Minnum) > MMMAX ? (Maxnum - Minnum) : MMMAX;
             }
             isPeople = MMMAX > iHumanThreshold;                             //MMMax 行峰峰值
-           
 
 
 
+            //this.frameMsg.Isodd = true;
 
             //奇偶翻转，temp2
             if (this.frameMsg.Isodd)
@@ -185,6 +185,9 @@ namespace WindowsFormsApp19
             {
                 backgroundframe = temp1;
             }
+
+
+            //Recorrect = true;
 
             //背景校准
             if (!isPeople)
@@ -292,8 +295,8 @@ namespace WindowsFormsApp19
         }
 
 
-        //[DllImport(@"C:/Users/lin/Desktop/dll/THZ_img_preprocess_dll_old.dll")]
-       // public extern static IntPtr apply(byte[] src_data, int height_in, int width_in, int step_in, out int height_out, out int width_out, out int step_out, int enhance_mode, int img_height, int img_width, bool imshow_switch);
+        [DllImport(@"C:/Users/lin/Desktop/dll/THZ_img_preprocess_dll_old.dll")]
+        public extern static IntPtr apply(byte[] src_data, int height_in, int width_in, int step_in, out int height_out, out int width_out, out int step_out, int enhance_mode, int img_height, int img_width, bool imshow_switch);
         /// <summary>
         /// 加权归一化,和插值
         /// </summary>
@@ -389,14 +392,6 @@ namespace WindowsFormsApp19
 
             }
 
-           /* int height_out, width_out, step_out;
-            Mat src_img_mat = new Mat();
-
-            IntPtr dst_img_data = apply(temp2.Mat.GetData(), 465, 36, 36, out height_out, out width_out, out step_out, 2, 465, 216, false);
-            src_img_mat = new Mat(height_out, width_out, 0, 1, dst_img_data, step_out);
-            objForm.imageBox6.Image = src_img_mat;
-            objForm.label6.Text = "lgy_iamge";*/
-
             //插值Resize
             CvInvoke.Resize(temp2, this.AlignImage, new Size(resizeImageWidth * 2, height * 2), 0, 0, Inter.Lanczos4);//183 * 2, height * 2
             objForm.imageBox2.Image = temp2.Mat;
@@ -404,6 +399,17 @@ namespace WindowsFormsApp19
 
             objForm.imageBox3.Image = AlignImage.Mat;
             objForm.label3.Text = "Normalization_AlignImage";
+
+
+
+            int height_out, width_out, step_out;
+            Mat src_img_mat = new Mat();
+
+            IntPtr dst_img_data = apply(AlignImage.Mat.GetData(), height * 2, resizeImageWidth * 2, resizeImageWidth * 2, out height_out, out width_out, out step_out, 2, height * 2, resizeImageWidth * 2, false);
+            src_img_mat = new Mat(height_out, width_out, 0, 1, dst_img_data, step_out);
+            objForm.imageBox6.Image = src_img_mat;
+            objForm.label6.Text = "lgy_iamge";
+
 
 
             //Form1 f1 = new Form1();

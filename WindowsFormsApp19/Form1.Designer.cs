@@ -42,6 +42,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.imageBox6 = new Emgu.CV.UI.ImageBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox3)).BeginInit();
@@ -174,11 +175,22 @@
             this.label6.TabIndex = 14;
             this.label6.Text = "lgy";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(22, 273);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(103, 90);
+            this.button2.TabIndex = 15;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1108, 643);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.imageBox6);
             this.Controls.Add(this.label5);
@@ -220,6 +232,7 @@
         public System.Windows.Forms.Label label5;
         public Emgu.CV.UI.ImageBox imageBox6;
         public System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button2;
     }
 }
 
