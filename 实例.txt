@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+
+using System.Diagnostics;
+
+
+namespace THZ_img_test
+{
+    class Program
+    {
+        [DllImport(@"E:/VS_ws/THZ_img_pre_dll/THZ_img_preprocess_dll/x64/Release/THZ_img_preprocess_dll.dll")]
+        public extern static IntPtr apply(byte[] src_data, int height_in, int width_in, int step_in, out int height_out, out int width_out, out int step_out, int enhance_mode, int img_height, int img_width, bool imshow_switch, string path);
+
+
+        static void Main(string[] args)
+        {
+            const string bin_path = "E:/matlab_ws/data/E3/Port8009_Frame2855.bin";
+            //const string bin_path = "E:/bin_data/Port8008_Frame262.bin";
+            int height_out, width_out, step_out;
+
+            Mat img_mat_in = new Mat();
+            Mat src_img_mat = new Mat();
+
+            //IntPtr src_img = adap_manif_binToImage(bin_path, out step, out width, out height);
+
+            img_mat_in = CvInvoke.Imread("E:/matlab_ws/data/iPhone.bmp", LoadImageType.Color);
+
+            IntPtr src_img_data = img_mat_in.DataPointer;
+            int height_in = img_mat_in.Height;
+            int width_in = img_mat_in.Width;
+            int step_in = img_mat_in.Step;
+
+            byte[] src_data_byte = new byte[height_in * width_in * 3];
+           
+            Marshal.Copy(src_img_data, src_data_byte, 0, height_in * width_in * 3);
+
+            //GCHandle hObject = GCHandle.Alloc(test, GCHandleType.Pinned);
+            //IntPtr pObject = hObject.AddrOfPinnedObject();
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+            IntPtr dst_img_data = apply(src_data_byte, height_in, width_in, step_in, out height_out, out width_out, out step_out, 2, 452, 216, false, bin_path);
+            watch.Stop();
+            Console.WriteLine("处理时间：" + watch.ElapsedMilliseconds.ToString() + "ms");
+
+            src_img_mat = new Mat(height_out, width_out, 0, 1, dst_img_data, step_out);
+                    
+            CvInvoke.Imshow("img", src_img_mat);
+            CvInvoke.WaitKey(0);
+           
+            Console.ReadLine();
+        }
+    }
+}
+
